@@ -1,0 +1,31 @@
+name: Build strapi
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - strapi/**
+
+jobs:
+  build-strapi:
+    runs-on: my-agent
+
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+
+      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b
+        with:
+          node-version: 20.19.0
+
+      - name: install pnpm
+        run: npm install -g pnpm@9.15.6
+
+      - name: strapi pnpm install
+        working-directory: ./strapi
+        run: pnpm install
+
+      - name: strapi run build
+        working-directory: ./strapi
+        run: pnpm run build
