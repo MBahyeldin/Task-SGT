@@ -22,11 +22,11 @@ jobs:
         run: npm install -g pnpm@9.15.6
 
       - name: nuxt pnpm install
-        working-directory: ./nuxt
+        working-directory: ./front-end
         run: pnpm install
 
       - name: nuxt run build
-        working-directory: ./nuxt
+        working-directory: ./front-end
         run: pnpm run build
 
       - name: tar nuxt build
