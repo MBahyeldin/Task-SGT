@@ -9,7 +9,7 @@
         class="flex items-center gap-2 transition-opacity hover:opacity-80"
       >
         <NuxtImg
-          src="/logo.svg"
+          src="/logo.png"
           alt="Logo"
           width="100"
           height="100"
