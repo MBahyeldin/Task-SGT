@@ -30,7 +30,7 @@ jobs:
         run: pnpm run build
 
       - name: tar Strapi build
-        working-directory: ./strapi
+        working-directory: .
         run: |
-          tar -czf strapi-build.tar.gz .
+          tar -czf strapi-build.tar.gz ./strapi
           mv strapi-build.tar.gz /home/gRPC/watched/
