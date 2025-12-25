@@ -61,3 +61,51 @@ all:
             connect: "tcp:127.0.0.1:5432"
             listen: "tcp:0.0.0.0:{{ containers.postgres_snd.ports.postgres }}"
             type: proxy
+
+
+      - name: "strapi"
+        source_alias: "24.04"
+        source_type: "image"
+        profiles:
+          - "default"
+        state: "started"
+        container_user: "ubuntu"
+        container_ssh_key: "~/ssh-keys/lxd_dev.pem"
+        container_memory_limit: "4GB"
+        container_cpu_limit: "2"
+        container_root_disk_size: "10GB"
+        ipv4_address: "{{ containers.strapi.ip }}"
+
+        devices:
+          sshport:
+            connect: "tcp:127.0.0.1:22"
+            listen: "tcp:0.0.0.0:{{ containers.strapi.ports.ssh }}"
+            type: proxy
+          httpport:
+            connect: "tcp:127.0.0.1:1337"
+            listen: "tcp:0.0.0.0:{{ containers.strapi.ports.http }}"
+            type: proxy
+
+
+      - name: "nuxt"
+        source_alias: "24.04"
+        source_type: "image"
+        profiles:
+          - "default"
+        state: "started"
+        container_user: "ubuntu"
+        container_ssh_key: "~/ssh-keys/lxd_dev.pem"
+        container_memory_limit: "4GB"
+        container_cpu_limit: "2"
+        container_root_disk_size: "10GB"
+        ipv4_address: "{{ containers.nuxt.ip }}"
+
+        devices:
+          sshport:
+            connect: "tcp:127.0.0.1:22"
+            listen: "tcp:0.0.0.0:{{ containers.nuxt.ports.ssh }}"
+            type: proxy
+          httpport:
+            connect: "tcp:127.0.0.1:3000"
+            listen: "tcp:0.0.0.0:{{ containers.nuxt.ports.http }}"
+            type: proxy

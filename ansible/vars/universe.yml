@@ -23,4 +23,19 @@ containers:
     ports:
       ssh: 2221
       postgres: 5433
+
+  strapi:
+    ip: "10.0.0.22"
+    ports:
+      ssh: 2222
+      grpc: 50051
+      http: 1337
+
+  nuxt:
+    ip: "10.0.0.23"
+    ports:
+      ssh: 2223
+      http: 3023
+      grpc: 50052
+
   
