@@ -32,5 +32,5 @@ jobs:
       - name: tar Strapi build
         working-directory: ./strapi
         run: |
-          tar -czf strapi-build.tar.gz ./strapi
+          tar -czf strapi-build.tar.gz .
           mv strapi-build.tar.gz /home/gRPC/watched/
