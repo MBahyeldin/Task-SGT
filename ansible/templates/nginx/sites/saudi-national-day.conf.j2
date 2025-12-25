@@ -1,11 +1,11 @@
 server {
     listen 443 ssl;
-    server_name api.saudi-national-day.flookaa.com;
+    server_name saudi-national-day.flookaa.com;
 
 
     # SSL certificate
-    ssl_certificate /etc/letsencrypt/live/api.saudi-national-day.flookaa.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.saudi-national-day.flookaa.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/saudi-national-day.flookaa.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/saudi-national-day.flookaa.com/privkey.pem;
 
     set $nuxt_host "{{ containers.nuxt.ip }}:{{ containers.nuxt.ports.http }}";
 
