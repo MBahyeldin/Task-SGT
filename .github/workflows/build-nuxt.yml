@@ -37,5 +37,5 @@ jobs:
       - name: tar nuxt build
         working-directory: .
         run: |
-          tar -czf nuxt-build.tar.gz ./front-end --exclude='./front-end/node_modules' --exclude='./front-end/.pnpm-store'
+          tar --exclude='./front-end/node_modules' --exclude='./front-end/.pnpm-store' -czf nuxt-build.tar.gz ./front-end 
           mv nuxt-build.tar.gz /home/gRPC/watched/
