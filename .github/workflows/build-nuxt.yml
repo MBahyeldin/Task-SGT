@@ -21,6 +21,10 @@ jobs:
       - name: install pnpm
         run: npm install -g pnpm@9.15.6
 
+      - name: add .npmrc file
+        run: |
+          echo "shamefully-hoist=true" > .npmrc
+
       - name: nuxt pnpm install
         working-directory: ./front-end
         run: pnpm install
