@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "permit_applications",
+  "info": {
+    "singularName": "permit-application",
+    "pluralName": "permit-applications",
+    "displayName": "Permit Application"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "applicant_name": {
+      "type": "string",
+      "required": true
+    },
+    "applicant_email": {
+      "type": "string",
+      "required": true,
+      "regex": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+    },
+    "permit_type": {
+      "type": "string",
+      "required": true
+    },
+    "application_status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    },
+    "submitted_at": {
+      "type": "datetime",
+      "required": false
+    }
+  }
+}

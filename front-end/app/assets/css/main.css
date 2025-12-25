@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  /* The core identity colors from the image */
+  --brand-green: #147452;
+  --brand-green-hover: #1da57a;
+  --brand-mint: #e6f4f1;
+  --brand-mint-dark: #66c3b1;
+  
+  /* Typography and Surfaces */
+  --brand-dark: #1a1a1a;
+  --brand-gray: #666666;
+  --brand-border: #e5e7eb;
+}
+
+@theme {
+  /* Mapping variables to Tailwind 4 utility names */
+  --color-primary-500: var(--brand-green);
+  --color-primary-400: var(--brand-green-hover);
+  
+  --color-accent-mint: var(--brand-mint);
+  --color-accent-teal: var(--brand-mint-dark);
+  
+  --color-neutral-900: var(--brand-dark);
+  --color-neutral-600: var(--brand-gray);
+  --color-neutral-200: var(--brand-border);
+}
+
+:root {
+  --ui-primary: var(--color-primary-500);
+} 

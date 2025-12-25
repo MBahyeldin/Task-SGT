@@ -1,0 +1,26 @@
+ansible_host_machine:
+  ansible_host: flookaa
+  ansible_connection: ssh
+  ansible_python_interpreter: /usr/bin/python3
+  ansible_become: true
+  ansible_become_method: sudo
+  ansible_become_user: root
+
+server_cert: "/etc/ssl/certs/server.crt"
+
+gateway4: "10.0.0.1"
+
+containers:
+  nginx:
+    ip: "10.0.0.10"
+    ports:
+      ssh: 2210
+      http: 80
+      https: 443
+
+  postgres_snd:
+    ip: "10.0.0.21"
+    ports:
+      ssh: 2221
+      postgres: 5433
+  

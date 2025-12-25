@@ -1,0 +1,101 @@
+---
+- name: Setup Nginx
+  hosts: nginx
+  gather_facts: true
+  become: true
+  vars_files:
+    - universe.yml
+  roles:
+    - init_container
+
+  tasks:
+    - name: Make sure logging directory exists
+      ansible.builtin.file:
+        path: "{{ logging_dir }}"
+        state: directory
+        mode: "0755"
+        owner: "www-data"
+        group: "www-data"
+    
+    - name: Check if OpenResty is already installed
+      ansible.builtin.stat:
+        path: /opt/build/openresty-{{ openresty_version }}
+      register: openresty_stat
+
+    - name: Build and Install OpenResty
+      include_role:
+        name: buildOpenresty
+      when: not openresty_stat.stat.exists
+
+
+    - name: Copy Nginx configuration file
+      ansible.builtin.template:
+        src: templates/nginx/nginx.conf
+        dest: "{{ nginx_path }}/conf/nginx.conf"
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Copy Nginx sites configuration
+      ansible.builtin.template:
+        src: "templates/nginx/sites/{{ item.template }}"
+        dest: "{{ nginx_path }}/sites-available/{{ item.dest }}"
+        owner: root
+        group: root
+        mode: '0644'
+      loop:
+        - { template: "flookaa.conf.j2", dest: "flookaa.conf" }
+        - { template: "grafana.conf.j2", dest: "grafana.conf" }
+        - { template: "default.conf.j2", dest: "default.conf" }
+        - { template: "api.conf.j2", dest: "api.conf" }
+        - { template: "ws.conf.j2", dest: "ws.conf" }
+        - { template: "s3.conf.j2", dest: "s3.conf" }
+
+    - name: Enable Nginx sites
+      ansible.builtin.file:
+        src: "{{ nginx_path }}/sites-available/{{ item.dest }}"
+        dest: "{{ nginx_path }}/sites-enabled/{{ item.dest }}"
+        state: link
+      loop:
+        - { dest: "flookaa.conf" }
+        - { dest: "grafana.conf" }
+        - { dest: "default.conf" }
+        - { dest: "api.conf" }
+        - { dest: "ws.conf" }
+        - { dest: "s3.conf" }
+
+    - name: Ensure Nginx is started and enabled
+      ansible.builtin.service:
+        name: openresty
+        state: started
+        enabled: true
+
+    - name: Test Nginx configuration
+      ansible.builtin.command: openresty -t
+      register: openresty_test
+      failed_when: openresty_test.rc != 0
+      changed_when: false
+
+    - name: Reload Nginx if configuration changed
+      ansible.builtin.service:
+        name: openresty
+        state: reloaded
+      when: openresty_test.rc == 0
+
+    
+    - name: Link nginx to OpenResty binary
+      ansible.builtin.file:
+        src: "{{ nginx_path }}/sbin/nginx"
+        dest: /usr/bin/nginx
+        state: link
+        force: true
+
+    - name: Link nginx dir to /etc/nginx
+      ansible.builtin.file:
+        src: "{{ nginx_path }}"
+        dest: /etc/nginx
+        state: link
+        owner: root
+        group: root
+        mode: '0555'
+        force: true

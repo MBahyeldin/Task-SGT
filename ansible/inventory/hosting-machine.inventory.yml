@@ -1,0 +1,63 @@
+all:
+  hosts:
+    main:
+      ansible_host: "{{ ansible_host_machine.ansible_host }}"
+      ansible_connection: ssh
+      ansible_ssh_private_key_file: ~/ssh-keys/lxd_dev.pem
+      ansible_user: ubuntu
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_become_user: root
+
+  vars:
+    lxd_containers:
+      - name: "nginx"
+        source_alias: "24.04"
+        source_type: "image"
+        profiles:
+          - "default"
+        state: "started"
+        container_user: "ubuntu"
+        container_ssh_key: "~/ssh-keys/lxd_dev.pem"
+        container_memory_limit: "2GB"
+        container_cpu_limit: "1"
+        container_root_disk_size: "5GB"
+        ipv4_address: "{{ containers.nginx.ip }}"
+
+        devices:
+          sshport:
+            connect: tcp:127.0.0.1:22
+            listen: "tcp:0.0.0.0:{{ containers.nginx.ports.ssh }}"
+            type: proxy
+          httpport:
+            connect: "tcp:127.0.0.1:80"
+            listen: "tcp:0.0.0.0:{{ containers.nginx.ports.http }}"
+            type: proxy
+          httpsport:
+            connect: "tcp:127.0.0.1:443"
+            listen: "tcp:0.0.0.0:{{ containers.nginx.ports.https }}"
+            type: proxy
+
+      - name: "postgres-snd"
+        source_alias: "24.04"
+        source_type: "image"
+        profiles:
+          - "default"
+        state: "started"
+        container_user: "ubuntu"
+        container_ssh_key: "~/ssh-keys/lxd_dev.pem"
+        container_memory_limit: "4GB"
+        container_cpu_limit: "2"
+        container_root_disk_size: "10GB"
+        ipv4_address: "{{ containers.postgres_snd.ip }}"
+
+        devices:
+          sshport:
+            connect: tcp:127.0.0.1:22
+            listen: "tcp:0.0.0.0:{{ containers.postgres_snd.ports.ssh }}"
+            type: proxy
+          postgres:
+            connect: "tcp:127.0.0.1:5432"
+            listen: "tcp:0.0.0.0:{{ containers.postgres_snd.ports.postgres }}"
+            type: proxy
