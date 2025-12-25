@@ -6,12 +6,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     strapi: {
-      url: 'http://localhost:1337',
+      url: process.env.NUXT_STRAPI_URL || 'http://localhost:1337',
       token: process.env.STRAPI_API_TOKEN,
     },
     public: {
       strapi: {
-        url: 'http://localhost:1337',
+        url: process.env.NUXT_STRAPI_URL || 'http://localhost:1337',
       }
     }
   }

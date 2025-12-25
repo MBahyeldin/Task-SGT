@@ -1,0 +1,35 @@
+[Unit]
+Description=nuxt App Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+# Environment variables
+EnvironmentFile={{ ENV_FILE_PATH }}
+Environment=NODE_ENV=production
+
+# App directory (contains package.json, node_modules, build/)
+WorkingDirectory={{ service_working_dir }}/front-end
+
+# Start nuxt
+ExecStart=/usr/bin/node {{ service_working_dir }}/front-end/.output/server/index.mjs
+
+# Restart policy
+Restart=always
+RestartSec=5
+
+# File descriptor limit (useful for DB connections)
+LimitNOFILE=65535
+
+# Run as non-root
+User={{ app_user }}
+Group={{ app_group }}
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

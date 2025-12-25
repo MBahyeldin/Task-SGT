@@ -6,8 +6,8 @@
   vars_files:
     - universe.yml
   roles:
-    # - init_container
-    # - install_node
+    - init_container
+    - install_node
 
   tasks:
     - name: Ensure app group exists

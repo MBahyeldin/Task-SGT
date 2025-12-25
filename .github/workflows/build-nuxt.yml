@@ -1,0 +1,36 @@
+name: Build nuxt
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - front-end/**
+
+jobs:
+  build-nuxt:
+    runs-on: self-hosted-nuxt
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+
+      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b
+        with:
+          node-version: 20.19.0
+
+      - name: install pnpm
+        run: npm install -g pnpm@9.15.6
+
+      - name: nuxt pnpm install
+        working-directory: ./nuxt
+        run: pnpm install
+
+      - name: nuxt run build
+        working-directory: ./nuxt
+        run: pnpm run build
+
+      - name: tar nuxt build
+        working-directory: .
+        run: |
+          tar -czf nuxt-build.tar.gz ./front-end --exclude='./front-end/node_modules' --exclude='./front-end/.pnpm-store'
+          mv nuxt-build.tar.gz /home/gRPC/watched/

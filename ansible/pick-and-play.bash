@@ -6,6 +6,7 @@ commands=(
   "ansible-playbook   nginx.playbook.yml                -i inventory/nginx.inventory.yml           -e @vars/nginx_vault.yml    --vault-password-file ./internal-scripts/vault-pass.bash -e '@vars/maxmind.vault.yml'"
   "ansible-playbook   postgres.playbook.yml             -i inventory/postgres.inventory.yml        -e @vars/postgres_vault.yml --vault-password-file ./internal-scripts/vault-pass.bash"
   "ansible-playbook   strapi.playbook.yml               -i inventory/strapi.inventory.yml          -e @vars/strapi_vault.yml   --vault-password-file ./internal-scripts/vault-pass.bash"
+  "ansible-playbook   nuxt.playbook.yml                 -i inventory/nuxt.inventory.yml            -e @vars/nuxt_vault.yml     --vault-password-file ./internal-scripts/vault-pass.bash"
  )
 
 # Display the menu
