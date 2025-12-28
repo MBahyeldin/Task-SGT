@@ -14,5 +14,8 @@ export default defineNuxtConfig({
         url: process.env.NUXT_PUBLIC_STRAPI_URL || 'http://localhost:1337',
       }
     }
-  }
+  },
+  ui: {
+    colorMode: false,
+  },
 })
